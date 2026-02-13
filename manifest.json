@@ -1,0 +1,17 @@
+{
+  "name": "Ngangela+",
+  "short_name": "Ngangela+",
+  "description": "Tradutor Português ↔ Ngangela",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

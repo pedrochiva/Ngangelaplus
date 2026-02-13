@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tradutor Ngangela</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2563eb">
+<style>
+  .icon-svg { width: 24px; height: 24px; fill: currentColor; vertical-align: middle; }
+  .stats-btn .icon-svg { width: 28px; height: 28px; }
+  .teacher-btn .icon-svg { width: 24px; height: 24px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header class="app-header">
+  <div class="brand">
+    <img src="icon.svg" alt="Ngangela+" class="logo">
+    <div>
+      <h1>Ngangela+</h1>
+      <p>Tradutor Português ↔ Ngangela</p>
+    </div>
+  </div>
+
+  <button id="themeToggle">
+    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+  </button>
+</header>
+
+  <div class="card lang-card">
+    <span id="fromLang">Português</span>
+    <button id="swap">⇄</button>
+    <span id="toLang">Ngangela</span>
+  </div>
+
+  <div class="card">
+    <textarea id="inputText" placeholder="Digite o texto..."></textarea>
+  </div>
+
+  <button class="primary-btn" onclick="traduzir()">Traduzir</button>
+  <div class="voice-actions">
+  <button id="speakBtn">
+    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+    Ouvir
+  </button>
+  <button id="stopSpeakBtn">
+    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+    Parar
+  </button>
+</div>
+  <div class="card result-card">
+    <p id="outputText">Tradução aparecerá aqui</p>
+  </div>
+  
+  <div class="card history-card">
+  <div class="history-header">
+    <h3>Histórico</h3>
+    <button id="clearHistory">Limpar</button>
+  </div>
+  <ul id="historyList"></ul>
+</div>
+
+</div>
+<button id="openTeacher" class="teacher-btn" title="Modo Professor">
+  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+</button>
+
+<div id="teacherPanel" class="teacher hidden">
+  <h2>Modo Professor</h2>
+  
+  <button id="exportDictionary">Exportar JSON</button>
+  <input type="file" id="importDictionary" accept=".json">
+  
+  
+  <select id="entryType">
+    <option value="word">Palavra</option>
+    <option value="phrase">Frase</option>
+  </select>
+  
+  <select id="entryDirection">
+    <option value="pt-ng">Português → Ngangela</option>
+    <option value="ng-pt">Ngangela → Português</option>
+  </select>
+  
+  <input id="entryFrom" placeholder="Texto original">
+  <input id="entryTo" placeholder="Tradução">
+  
+  <button id="saveEntry">Guardar</button>
+  <button id="closeTeacher" class="close">✕ Fechar</button>
+</div>
+
+<section class="stats">
+  <button id="closeStats" class="close-stats">✕</button>
+
+  <h2>
+    <svg class="icon-svg" viewBox="0 0 24 24" style="margin-right: 8px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+    Estatísticas
+  </h2>
+
+  <!-- Progresso -->
+  <div class="card progress-card">
+    <span class="label">Progresso geral</span>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0%"></div>
+    </div>
+    <span class="value">0%</span>
+  </div>
+
+  <!-- Resumo -->
+  <div class="grid">
+    <div class="card">
+      <span class="label">Palavras</span>
+      <span class="value" id="statWords">0</span>
+    </div>
+
+    <div class="card">
+      <span class="label">Aprendidas</span>
+      <span class="value" id="statLearned">0</span>
+    </div>
+
+    <div class="card">
+      <span class="label">Tempo total</span>
+      <span class="value" id="statTime">0h 0m</span>
+    </div>
+
+    <div class="card streak">
+      <span class="label">
+        <svg class="icon-svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+        Streak
+      </span>
+      <span class="value streak-value" id="statStreak">0 dias</span>
+    </div>
+  </div>
+
+  <!-- Por idioma -->
+  <div class="card">
+    <span class="label">Idiomas</span>
+
+    <ul class="lang-list" id="statLangList">
+      <li>
+        <span>Português → Ngangela</span>
+        <strong id="statPtNg">0</strong>
+      </li>
+      <li>
+        <span>Ngangela → Português</span>
+        <strong id="statNgPt">0</strong>
+      </li>
+    </ul>
+  </div>
+  <div class="card" style="height: 250px;">
+  <h3>Traduções por dia</h3>
+  <canvas id="dailyChart"></canvas>
+</div>
+
+</section>
+
+<button id="openStats" class="stats-btn">
+  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="main.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/notifications.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+
+</body>
+</html>

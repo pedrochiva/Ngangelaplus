@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="120" fill="#2563eb"/>
+  
+  <!-- Balões de tradução -->
+  <rect x="110" y="140" width="200" height="140" rx="40" fill="#ffffff"/>
+  <rect x="200" y="220" width="200" height="140" rx="40" fill="#16a34a"/>
+
+  <!-- Texto -->
+  <text x="210" y="225" font-size="72" font-family="Arial, sans-serif" fill="#0f172a" font-weight="bold">PT</text>
+  <text x="270" y="315" font-size="64" font-family="Arial, sans-serif" fill="#ffffff" font-weight="bold">NG</text>
+</svg>
